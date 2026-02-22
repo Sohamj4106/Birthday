@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    background: radial-gradient(circle at center, #ffd6e7 0%, #ffc0cb 80%);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #ffd6e7 0%, #ffc0cb 80%);
+    z-index: -1;
+}
+
+/* Cinematic Title */
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    letter-spacing: 3px;
+    margin-top: 40px;
+    display: none;
+    color: #c2185b;
+    text-shadow: 
+        0 0 10px #ff69b4,
+        0 0 25px #ff1493,
+        0 0 40px rgba(255,20,147,0.5);
+    animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 30px;
+    background: gold;
+    color: black;
+    cursor: pointer;
+    margin-top: 200px;
+    font-weight: bold;
+}
+
+.media-container {
+    display: none;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.media-container video,
+.media-container img {
+    width: 320px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255,215,0,0.5);
+    transition: transform 0.5s;
+}
+
+.media-container video:hover,
+.media-container img:hover {
+    transform: scale(1.05);
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+    }
+}
+
+/* Floating particles */
+.particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: gold;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: float 10s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+@media (max-width: 900px) {
+    .media-container {
+        flex-direction: column;
+    }
+}
+.custom-text {
+    display: none;
+    opacity: 0;
+    transition: opacity 2s ease;
+    margin-top: 50px;
+    font-size: 2rem;
+    font-family: 'Playfair Display', serif;
+    color: #c2185b;
+    text-align: center;
+    position: relative;
+    z-index: 10;   /* keeps it above videos */
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+#heartGame {
+    margin-top: 180px;
+}
+
+.unlock-text {
+    font-size: 1.5rem;
+    color: #c2185b;
+    font-family: 'Playfair Display', serif;
+}
+
+#heart {
+    font-size: 4rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#heart:active {
+    transform: scale(1.3);
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<h1 id="title">✨ Happy Birthday Shrusty ✨</h1>
+
+<div id="heartGame">
+    <p class="unlock-text">Tap the heart 5 times to unlock 🎀</p>
+    <div id="heart">❤️</div>
+</div>
+
+<button id="startBtn" onclick="start()" style="display:none;">
+    Start the Celebration 🎬
+</button>
+<div id="customText" class="custom-text">
+    You are about to turn 19, Shrusty… 🎉 and I honestly don’t think you even realize how special you are. 💖  
+From the way you smile to the way you care, you bring warmth and light into my life in ways I can’t fully explain. ✨  
+Tomorrow isn’t just your birthday it’s the day the world was gifted someone truly beautiful, inside and out. 🌸  
+I feel lucky to know you, to celebrate you, and to be a small part of your journey. 💫  
+May 19 bring you endless happiness, success, laughter, and everything your heart secretly wishes for. 💕  
+Happy 19th birthday to someone who means more to me than words can ever say. 🎂
+
+</div>
+<div class="media-container" id="media">
+    <video id="video1" src="video1.mp4" loop></video>
+    <img src="photo.jpeg">
+    <video id="video2" src="video2.mp4" loop></video>
+</div>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+let tapCount = 0;
+let heart = document.getElementById("heart");
+let scaleSize = 1;
+
+heart.addEventListener("click", function() {
+    tapCount++;
+
+    // Increase size each click
+    scaleSize += 0.3;
+    heart.style.transform = "scale(" + scaleSize + ")";
+
+    if (tapCount >= 5) {
+        heart.innerHTML = "💖";
+        setTimeout(() => {
+            document.getElementById("heartGame").style.display = "none";
+            document.getElementById("startBtn").style.display = "inline-block";
+        }, 500);
+    }
+});
+
+function start() {
+    document.querySelector("button").style.display = "none";
+
+    document.getElementById("title").style.display = "block";
+    document.getElementById("media").style.display = "flex";
+
+    // Show custom text properly
+    let text = document.getElementById("customText");
+    text.style.display = "block";
+
+    setTimeout(() => {
+        text.style.opacity = "1";
+    }, 100);
+
+    document.getElementById("video1").play();
+    document.getElementById("video2").play();
+    document.getElementById("music").play();
+
+    createConfetti();
+    createParticles();
+}
+function createConfetti() {
+    let confettiPieces = [];
+
+    for (let i = 0; i < 200; i++) {
+        let confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.background =
+            "hsl(" + Math.random() * 360 + ", 80%, 60%)";
+        confetti.style.animationDuration =
+            (3 + Math.random() * 5) + "s";
+
+        document.body.appendChild(confetti);
+        confettiPieces.push(confetti);
+    }
+
+    // Remove confetti after 5 seconds
+    setTimeout(() => {
+        confettiPieces.forEach(piece => piece.remove());
+    }, 5000);
+}
+
+function createParticles() {
+    for (let i = 0; i < 40; i++) {
+        let particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.animationDuration =
+            (5 + Math.random() * 10) + "s";
+        document.body.appendChild(particle);
+    }
+}
+
+</script>
+
+</body>
+</html>
